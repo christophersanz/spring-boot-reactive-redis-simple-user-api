@@ -1,6 +1,24 @@
 version: "3.7"
 services:
+  backend:
+    image: ms-sp-soporte-ti-obtiene-datos-geografia-pga:latest
+    container_name: backend
+    build:
+      context: .
+    ports:
+      - "9090:9090"
+    depends_on:
+      - redis-db
   redis-db:
     image: redis:alpine
+    container_name: redis-db
     ports:
       - "6379:6379"
+    environment:
+      - REDIS_REPLICATION_MODE=master
+    command: redis-server --requirepass 50M3*S3cured*Pa55W0rd
+    healthcheck:
+      test: [ "CMD", "redis-cli", "auth", "50M3*S3cured*Pa55W0rd", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10

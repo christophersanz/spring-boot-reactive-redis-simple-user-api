@@ -1,0 +1,49 @@
+server:
+  port: 9090
+  servlet:
+    context-path: /ms-sp-soporte-ti-obtiene-datos-geografia-pga/v1
+
+spring:
+  application:
+    name: ms-sp-soporte-ti-obtiene-datos-geografia-pga-v1
+  main:
+    allow-bean-definition-overriding: true
+
+  redis:
+    host: 127.0.0.1
+    password: E3gGnad5XhQj9VqCWmYYOLe8UvPFt9zq4AzCaA5bawE=
+    port: 6379
+    ssl: false
+    jedis :
+      pool:
+        max-active: 500
+        max-idle: 10
+        min-idle: 1
+        max-wait: 360s
+
+api:
+  support:
+    base:
+      ubigeo:
+        url: http://localhost:9080/ubigeo
+        Authorization: 1234557aa
+        ocp-apim-subscription-key: 926ec90111ea4d3bb44699fa01f01c1baa
+        ocp-apim-trace: true
+webclient:
+  connect:
+    time-out.millis: 50000
+  read:
+    time-out.seconds: 50
+  write:
+    time-out.seconds: 50
+  circuit-breaker:
+    time-out.seconds: 4
+
+logging:
+  pattern:
+    console: '%d{yyyy-MM-dd HH:mm:ss} - %msg%n'
+    file: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n'
+  level:
+    org.springframework.web: ERROR
+    pe.com.pacifico.kuntur: DEBUG
+    org.hibernate: ERROR

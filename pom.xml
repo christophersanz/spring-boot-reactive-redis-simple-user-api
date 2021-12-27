@@ -3,12 +3,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.journaldev</groupId>
-	<artifactId>spring-boot-reactive-redis-simple-user-api</artifactId>
+	<groupId>pe.com.pacifico.kuntur</groupId>
+	<artifactId>ms-sp-soporte-ti-obtiene-datos-geografia-pga</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>spring-boot-reactive-redis-simple-user-api</name>
+	<name>ms-sp-soporte-ti-obtiene-datos-geografia-pga</name>
 	<description>Demo project for Spring Boot</description>
 
 	<parent>
@@ -36,7 +36,18 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis-reactive</artifactId>
+			<!--<exclusions>
+				<exclusion>
+					<groupId>io.lettuce</groupId>
+					<artifactId>lettuce-core</artifactId>
+				</exclusion>
+			</exclusions>-->
 		</dependency>
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-rsocket</artifactId>
