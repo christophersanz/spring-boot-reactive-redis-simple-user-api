@@ -9,11 +9,14 @@ spring:
   main:
     allow-bean-definition-overriding: true
 
+  codec:
+    max-in-memory-size: 20MB
+
   redis:
-    host: 127.0.0.1
-    password: E3gGnad5XhQj9VqCWmYYOLe8UvPFt9zq4AzCaA5bawE=
-    port: 6379
-    ssl: false
+    host: rdsspgeografiaCrt0100.redis.cache.windows.net
+    password: d8IEBNkoKUdxOgqY1XKMaLu4CGgCZZvc9AzCaNY6EqI=
+    port: 6380
+    ssl: true
     jedis :
       pool:
         max-active: 500

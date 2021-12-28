@@ -16,13 +16,9 @@ services:
       - "6379:6379"
     environment:
       - REDIS_REPLICATION_MODE=master
-<<<<<<< HEAD
-=======
-    container_name: redis-db
->>>>>>> 9cd3533a2018c4251ed311ac18fbdfb4effbc010
-    command: redis-server --requirepass 50M3*S3cured*Pa55W0rd
+    command: redis-server --requirepass E3gGnad5XhQj9VqCWmYYOLe8UvPFt9zq4AzCaA5bawE=
     healthcheck:
-      test: [ "CMD", "redis-cli", "auth", "50M3*S3cured*Pa55W0rd", "ping" ]
+      test: [ "CMD", "redis-cli", "auth", "E3gGnad5XhQj9VqCWmYYOLe8UvPFt9zq4AzCaA5bawE=", "ping" ]
       interval: 10s
       timeout: 5s
       retries: 10

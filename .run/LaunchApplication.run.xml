@@ -1,0 +1,19 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="LaunchApplication" type="Application" factoryName="Application" nameIsGenerated="true">
+    <envs>
+      <env name="sp-soporte-ti-obtiene-datos-geografia-pga-redis-host" value="kuntur-redis.redis.cache.windows.net" />
+      <env name="sp-soporte-ti-obtiene-datos-geografia-pga-redis-password" value="E3gGnad5XhQj9VqCWmYYOLe8UvPFt9zq4AzCaA5bawE=" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="pe.com.pacifico.kuntur.LaunchApplication" />
+    <module name="ms-sp-soporte-ti-obtiene-datos-geografia-pga" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="pe.com.pacifico.kuntur.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

@@ -64,27 +64,26 @@ public class RedisConfig {
 
 
  //########################################## JEDIS FACTORY
- @Bean
- public ReactiveRedisTemplate<String, Ubigeo> reactiveRedisTemplate(ReactiveRedisConnectionFactory factory) {
+  @Bean
+  public ReactiveRedisTemplate<String, Ubigeo> reactiveRedisTemplate(ReactiveRedisConnectionFactory factory) {
      StringRedisSerializer keySerializer = new StringRedisSerializer();
-     Jackson2JsonRedisSerializer<Ubigeo> valueSerializer = new Jackson2JsonRedisSerializer<>(
-             Ubigeo.class);
+     Jackson2JsonRedisSerializer<Ubigeo> valueSerializer = new Jackson2JsonRedisSerializer<>(Ubigeo.class);
      RedisSerializationContext.RedisSerializationContextBuilder<String, Ubigeo> builder = RedisSerializationContext
              .newSerializationContext(keySerializer);
      RedisSerializationContext<String, Ubigeo> context = builder.value(valueSerializer).build();
      return new ReactiveRedisTemplate<>(factory, context);
- }
+  }
 
-    @Bean
-    public ReactiveRedisOperations<String, Ubigeo> redisOperations(ReactiveRedisConnectionFactory connectionFactory) {
-        RedisSerializationContext<String, Ubigeo> serializationContext = RedisSerializationContext
-                .<String, Ubigeo>newSerializationContext(new StringRedisSerializer())
-                .key(new StringRedisSerializer())
-                .value(new GenericToStringSerializer<>(Ubigeo.class))
-                .hashKey(new StringRedisSerializer())
-                .hashValue(new GenericJackson2JsonRedisSerializer())
-                .build();
-        return new ReactiveRedisTemplate<>(connectionFactory, serializationContext);
-    }
+  @Bean
+  public ReactiveRedisOperations<String, Ubigeo> redisOperations(ReactiveRedisConnectionFactory connectionFactory) {
+     RedisSerializationContext<String, Ubigeo> serializationContext = RedisSerializationContext
+            .<String, Ubigeo>newSerializationContext(new StringRedisSerializer())
+            .key(new StringRedisSerializer())
+            .value(new GenericToStringSerializer<>(Ubigeo.class))
+            .hashKey(new StringRedisSerializer())
+            .hashValue(new GenericJackson2JsonRedisSerializer())
+            .build();
+    return new ReactiveRedisTemplate<>(connectionFactory, serializationContext);
+  }
 
 }
