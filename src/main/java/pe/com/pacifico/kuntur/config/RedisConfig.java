@@ -1,13 +1,16 @@
 package pe.com.pacifico.kuntur.config;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.core.env.Environment;
 import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettucePoolingClientConfiguration;
 import org.springframework.data.redis.core.ReactiveRedisOperations;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.data.redis.serializer.*;
@@ -30,27 +33,38 @@ import pe.com.pacifico.kuntur.model.Ubigeo;
 @Configuration
 public class RedisConfig {
 
-  @Value("${spring.redis.host}")
-  private String redisHost;
+  @Autowired
+  private Environment env;
 
-  @Value("${spring.redis.port}")
-  private int redisPort;
+ // ########################################## CONECTION LETUCCE ########################################## //
+    /**
+     * Creación de Bean tipo LettuceConnectionFactory.
+     * @return LettuceConnectionFactory.
+     */
+    @Bean
+    @Primary
+    public ReactiveRedisConnectionFactory lettuceConnectionFactory() {
+        RedisStandaloneConfiguration redisStandaloneConfig = new RedisStandaloneConfiguration();
+        redisStandaloneConfig.setHostName(env.getProperty("spring.redis.host"));
+        redisStandaloneConfig.setPort(Integer.parseInt(env.getProperty("spring.redis.port")));
+        redisStandaloneConfig.setPassword(env.getProperty("spring.redis.password"));
 
-  @Value("${spring.redis.password}")
-  private String redisPassword;
+        GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
+        poolConfig.setMinIdle(Integer.parseInt(env.getProperty("spring.redis.letucce.pool.min-idle")));
+        poolConfig.setMaxIdle(Integer.parseInt(env.getProperty("spring.redis.letucce.pool.max-idle")));
 
-/*
-  @Bean
-  public LettuceConnectionFactory lettuceConnectionFactory() {
-    RedisStandaloneConfiguration redisStandaloneConfig = new RedisStandaloneConfiguration();
-    redisStandaloneConfig.setHostName(redisHost);
-    redisStandaloneConfig.setPort(redisPort);
-    redisStandaloneConfig.setPassword(redisPassword);
-    return new LettuceConnectionFactory(redisStandaloneConfig);
-  }
+        LettuceClientConfiguration lettuceClientConfiguration = LettucePoolingClientConfiguration.builder().poolConfig(poolConfig).build();
 
-  @Bean
-  public ReactiveRedisOperations<String, Ubigeo> redisOperations(LettuceConnectionFactory connectionFactory) {
+        return new LettuceConnectionFactory(redisStandaloneConfig, lettuceClientConfiguration);
+    }
+
+    @Bean
+    ReactiveRedisTemplate<String, String> reactiveRedisTemplate() {
+        return new ReactiveRedisTemplate<>(lettuceConnectionFactory(), RedisSerializationContext.string());
+    }
+
+   @Bean
+  public ReactiveRedisOperations<String, Ubigeo> reactiveRedisOperations(LettuceConnectionFactory connectionFactory) {
     RedisSerializationContext<String, Ubigeo> serializationContext = RedisSerializationContext
             .<String, Ubigeo>newSerializationContext(new StringRedisSerializer())
             .key(new StringRedisSerializer())
@@ -60,10 +74,9 @@ public class RedisConfig {
             .build();
     return new ReactiveRedisTemplate<>(connectionFactory, serializationContext);
   }
-*/
 
-
- //########################################## JEDIS FACTORY
+ // ########################################## CONECTION JEDIS ########################################## //
+  /*
   @Bean
   public ReactiveRedisTemplate<String, Ubigeo> reactiveRedisTemplate(ReactiveRedisConnectionFactory factory) {
      StringRedisSerializer keySerializer = new StringRedisSerializer();
@@ -85,5 +98,6 @@ public class RedisConfig {
             .build();
     return new ReactiveRedisTemplate<>(connectionFactory, serializationContext);
   }
+  */
 
 }
